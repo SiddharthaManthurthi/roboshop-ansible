@@ -7,7 +7,7 @@
       src: mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
   - name: install mongodb server
-    ansible.builtin.dnf:   #for installing if we use one os we use same for all servers and install use dnf for rhel
+    ansible.builtin.dnf:   #for installing if we use one os we use same for all servers and install use ansible dnf module for rhel
      name: mongodb-org
      state: present
 
@@ -27,3 +27,5 @@
   #   ansible.builtin.service:  #for services starting and enabling
   #     name: mongodb
   #     state: restarted
+
+  #27017 mongodb port
