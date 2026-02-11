@@ -11,7 +11,7 @@
      state: present
 
   - name: create system user roboshop
-    ansible.builtin.user:
+    ansible.builtin.user: #for creating user with ansible module
      name: roboshop
      system: true
      home: /app
@@ -33,7 +33,12 @@
      src: /tmp/catalogue.zip
      dest: /app
      remote_src: yes
-
-
-
   
+  - name: install dependencies
+    community.general.npm: ##ansible module for installing  the dependencies
+     path: /app
+  
+  - name: copy catalogue service
+    ansible.builtin.copy:
+     src: catalogue.service
+     dest: /etc/systemd/system/catalogue.service
