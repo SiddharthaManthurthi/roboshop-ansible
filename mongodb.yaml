@@ -15,7 +15,7 @@
     ansible.builtin.replace: #replace listen addresses in the config file
      path: /etc/mongod.conf
      regexp: '127.0.0.1'
-     repalce: '0.0.0.0'
+     replace: '0.0.0.0'
 
   - name: start and enable mongodb
     ansible.builtin.service:  #for services starting and enabling
