@@ -1,3 +1,6 @@
+
+#ansible-playbook -i localhost, -e "instance=['mongodb', 'catalogue', 'redis', 'user','cart','mysql','shipping','rabbitmq', 'payment', 'frontend']" roboshop.yaml
+
 - name: create ec2 and route 53 records
   hosts: all
   connection: local
@@ -6,7 +9,7 @@
    ami_id: ami-0220d79f3f480ecf5
    domain_name: siddharthais.online
    env: dev
-   action: create
+   action: create #creates automatically we can overide on command line to destroy
    instances:
    - mongodb
    - catalogue 
@@ -41,7 +44,7 @@
       ttl: 1
       value: "{{ item.instances[0].private_ip_address }}"
       wait: true
-    loop: "{{ ec2_output.results }}"
+    loop: "{{ ec2_output.results }}" #list
     when: action == "create"
 
   - name: create r53 records
@@ -74,5 +77,6 @@
     amazon.aws.ec2_instance: 
       state: absent
       name: "{{ item }}-{{ env }}"
+      wait: false
     loop: "{{ instances }}"
     when: action == "destroy"
