@@ -50,7 +50,7 @@
      path: /app
   
   - name: copy cart service
-    ansible.builtin.copy: ##ansible module for copy #also we can use template if it is variable
+    ansible.builtin.template: ##ansible module for copy #also we can use template if it is variable
      src: cart.service
      dest: /etc/systemd/system/cart.service
 
