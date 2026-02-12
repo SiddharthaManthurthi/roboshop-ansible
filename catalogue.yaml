@@ -1,6 +1,7 @@
 - name: catalogue configure
   hosts: catalogue
   become: yes
+  
   tasks:
   - name: enable nodjs 20
     ansible.builtin.command: dnf module enable nodejs:20 -y  #we dont have module command on ansible dnf modules so using this directly
@@ -28,7 +29,7 @@
       path: /app
       state: directory
 
-  - name: delete catalogue
+  - name: delete catalogue zip file
     ansible.builtin.file:  #ansible module for delete  the file
       dest: /tmp/catalogue.zip  
       state: absent 
@@ -75,13 +76,9 @@
     ansible.builtin.shell:  mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
     when: catalogue_output.stdout  | int < 0  #0 is number we need to convert it into string 
 
-  - name: reload systemd
-    ansible.builtin.systemd:
-     daemon_reload: true
-
   - name: start catalogue
     ansible.builtin.service:
       name: catalogue
       state: restarted
-      enabled: true
+      enabled: yes
 
