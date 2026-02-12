@@ -71,3 +71,4 @@
       enabled: yes
 
       #curl http://cart-dev.siddharthais.online:8080/health
+      #telnet user-dev.siddharthais.online 8080
