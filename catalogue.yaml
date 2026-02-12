@@ -75,9 +75,13 @@
     ansible.builtin.shell:  mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
     when: catalogue_output.stdout  | int < 0  #0 is number we need to convert it into string 
 
-  - name: start the catalogue
+  - name: reload systemd
+    ansible.builtin.systemd:
+     daemon_reload: yes
+
+  - name: start catalogue
     ansible.builtin.service:
       name: catalogue
-      state: started
-      enabled: true
+      state: restarted
+      enabled: yes
 
