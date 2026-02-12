@@ -22,7 +22,7 @@
      security_group: "{{ sg_id }}"
      image_id: "{{ ami_id }}"
      name: "{{ item }}-{{ env }}"
-     wait: false
+     wait: true
      tags:
        Project: roboshop
        Component: "{{ item }}"
@@ -84,3 +84,10 @@
       wait: false
     loop: "{{ instances }}"
     when: action == "destroy"
+
+
+
+
+#ansible-playbook -i localhost, \
+#-e '{"instances":["mongodb","catalogue","redis","user","cart","mysql","shipping","rabbitmq","payment","frontend"]}' \
+#roboshop.yaml
