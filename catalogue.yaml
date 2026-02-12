@@ -70,7 +70,7 @@
      state: present
 
   - name: check product loaded or not  #is a module used to run a simple command on the target machine without pipes
-    ansible.builtin.command: mongosh --host "{{ MONGODB_HOST_VARIABLE }}" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+    ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
     register: catalogue_output #register stores the result of that task into a variable
 
   - name: print the output
@@ -78,7 +78,7 @@
      msg: "{{ catalogue_output }}"
   
   - name: load the products  #is a module used to run a shell command on the target machine with pipes
-    ansible.builtin.shell:  mongosh --host "{{ MONGODB_HOST_VARIABLE }}" </app/db/master-data.js
+    ansible.builtin.shell:  mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
     when: catalogue_output.stdout  | int < 0  #0 is number we need to convert it into string 
 
   - name: start catalogue
