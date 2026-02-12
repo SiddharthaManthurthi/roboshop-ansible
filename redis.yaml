@@ -27,5 +27,6 @@
       name: redis
       state: restarted
       enabled: yes
-
+      
+#telnet redis-dev.siddharthais.online 6379
 

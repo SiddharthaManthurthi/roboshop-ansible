@@ -1,0 +1,65 @@
+- name: user configure
+  hosts: user
+  become: yes
+  
+  tasks:
+  - name: enable nodjs 20
+    ansible.builtin.command: dnf module enable nodejs:20 -y  #we dont have module command on ansible dnf modules so using this directly
+
+  - name: install noodjs
+    ansible.builtin.dnf: #for installing  ansible module
+     name: nodejs
+     state: present
+
+  - name: create system user roboshop
+    ansible.builtin.user: #for creating user with ansible module
+     name: roboshop
+     system: true
+     home: /app
+     shell: /sbin/nologin
+     comment: " Roboshop System user "
+
+  - name: delete app directory
+    ansible.builtin.file:  #for deleting directories with ansible module
+     path: /app
+     state: absent
+
+  - name: create app directory
+    ansible.builtin.file:  #for creating directories with ansible module
+      path: /app
+      state: directory
+
+  - name: delete user zip file
+    ansible.builtin.file:  #ansible module for delete  the file
+      dest: /tmp/user.zip  
+      state: absent 
+
+  - name: download user
+    ansible.builtin.get_url: #ansible module for downloading the file
+      url: https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip 
+      dest: /tmp/user.zip
+
+  - name: unarchieve user
+    ansible.builtin.unarchive:
+     src: /tmp/user.zip
+     dest: /app
+     remote_src: yes
+  
+  - name: install dependencies
+    community.general.npm: ##ansible module for installing  the dependencies
+     path: /app
+  
+  - name: copy user service
+    ansible.builtin.copy: ##ansible module for copy #also we can use template if it is variable
+     src: user.service
+     dest: /etc/systemd/system/user.service
+
+  - name: demonreload
+    ansible.builtin.systemd:
+     daemon_reload: true
+
+  - name: start user
+    ansible.builtin.service:
+      name: user
+      state: restarted
+      enabled: yes
