@@ -29,7 +29,7 @@
       state: directory
 
   - name: delete catalogue
-    ansible.builtin.get_url: #ansible module for delete  the file
+    ansible.builtin.file:  #ansible module for delete  the file
       dest: /tmp/catalogue.zip  
       state: absent 
 
