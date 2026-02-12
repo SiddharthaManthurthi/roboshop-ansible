@@ -1,0 +1,87 @@
+- name: catalogue configure
+  hosts: catalogue
+  become: yes
+  tasks:
+  - name: enable nodjs 20
+    ansible.builtin.command: dnf module enable nodejs:20 -y  #we dont have module command on ansible dnf modules so using this directly
+
+  - name: install noodjs
+    ansible.builtin.dnf: #for installing  ansible module
+     name: nodejs
+     state: present
+
+  - name: create system user roboshop
+    ansible.builtin.user: #for creating user with ansible module
+     name: roboshop
+     system: true
+     home: /app
+     shell: /sbin/nologin
+     comment: " Roboshop System user "
+
+  - name: delete app directory
+    ansible.builtin.file:  #for deleting directories with ansible module
+     path: /app
+     state: absent
+
+  - name: create app directory
+    ansible.builtin.file:  #for creating directories with ansible module
+      path: /app
+      state: directory
+
+  - name: delete catalogue
+    ansible.builtin.file:  #ansible module for delete  the file
+      dest: /tmp/catalogue.zip  
+      state: absent 
+
+  - name: download catalogue
+    ansible.builtin.get_url: #ansible module for downloading the file
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+      dest: /tmp/catalogue.zip
+
+  - name: unarchieve catalogue
+    ansible.builtin.unarchive:
+     src: /tmp/catalogue.zip
+     dest: /app
+     remote_src: yes
+  
+  - name: install dependencies
+    community.general.npm: ##ansible module for installing  the dependencies
+     path: /app
+  
+  - name: copy catalogue service
+    ansible.builtin.copy: ##ansible module for copy 
+     src: catalogue.service
+     dest: /etc/systemd/system/catalogue.service
+  
+  - name: copy mongo repo
+    ansible.builtin.copy: ##ansible module for copy 
+     src: mongo.repo
+     dest: /etc/yum.repos.d/mongo.repo
+
+  - name: install mongodb client
+    ansible.builtin.dnf: #for installing  ansible module
+     name: mongodb-mongosh
+     state: present
+
+  - name: check product loaded or not  #is a module used to run a simple command on the target machine without pipes
+    ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+    register: catalogue_output #register stores the result of that task into a variable
+
+  - name: print the output
+    ansible.builtin.debug:
+     msg: "{{ catalogue_output }}"
+  
+  - name: load the products  #is a module used to run a shell command on the target machine with pipes
+    ansible.builtin.shell:  mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
+    when: catalogue_output.stdout  | int < 0  #0 is number we need to convert it into string 
+
+  - name: reload systemd
+    ansible.builtin.systemd:
+     daemon_reload: true
+
+  - name: start catalogue
+    ansible.builtin.service:
+      name: catalogue
+      state: restarted
+      enabled: true
+
