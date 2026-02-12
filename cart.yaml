@@ -54,15 +54,14 @@
      src: cart.service
      dest: /etc/systemd/system/cart.service
 
-  - name: demonreload
-    ansible.builtin.systemd:
-     daemon_reload: true
-
-  
   - name: copy mongo repo
     ansible.builtin.copy: ##ansible module for copy 
      src: mongo.repo
      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: demonreload
+    ansible.builtin.systemd:
+     daemon_reload: true
 
   - name: start cart
     ansible.builtin.service:
