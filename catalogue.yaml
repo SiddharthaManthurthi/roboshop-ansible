@@ -50,7 +50,7 @@
      path: /app
   
   - name: copy catalogue service
-    ansible.builtin.template: ##ansible module for copy 
+    ansible.builtin.copy: ##ansible module for copy #also we can use template if it is variable
      src: catalogue.service
      dest: /etc/systemd/system/catalogue.service
 
