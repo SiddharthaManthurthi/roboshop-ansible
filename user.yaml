@@ -69,3 +69,4 @@
        #if error occurs like connection refused login to user server and suo and check var logs
        # cat /etc/systemd/systed/user.service check if url resolve
        #first check manaual and then check code
+       
