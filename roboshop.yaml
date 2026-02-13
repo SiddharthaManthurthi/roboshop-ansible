@@ -92,3 +92,7 @@
 #ansible-playbook -i localhost, \
 #-e '{"instances":["mongodb","catalogue","redis","user","cart","mysql","shipping","rabbitmq","payment","frontend"]}' \
 #roboshop.yaml
+
+
+#this is example of creating duplicate servers with from each server bcz we set hosts all so it will take all server from the inventory file
+# -ansible-playbook -i inventory.ini -e "instances=['mongodb'. 'catalogue', 'redis', 'user', 'cart', 'mysql', 'shipping', 'rabbitmq', 'payment', 'frontend']" roboshop.yaml
