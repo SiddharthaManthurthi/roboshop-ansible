@@ -1,6 +1,7 @@
 
 #ansible-playbook -i localhost, \ -e '{"instances":["mongodb","catalogue","redis","user","cart","mysql","shipping","rabbitmq","payment","frontend"]}' \ roboshop.yaml
 #ansible-playbook -i inventory.ini mongodb.yaml
+#ansible-playbook -i inventory.ini user.yaml ; ansible-playbook -i inventory.ini cart.yaml --> for running two
 
 
 - name: create ec2 and route 53 records
