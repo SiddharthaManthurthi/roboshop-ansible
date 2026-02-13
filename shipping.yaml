@@ -62,6 +62,13 @@
   - name: demonreload
     ansible.builtin.systemd_service:
      daemon_reload: true
+  
+  - name: install dependencies
+    ansible.builtin.pip:
+      name: PyMySQL
+      excutable: pip3.9
+    args:
+      chdir: /app
 
   - name: import shipping data   
     community.mysql.mysql_db:   #anisble command to import the data
