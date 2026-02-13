@@ -89,3 +89,5 @@
       name: shipping
       state: restarted
       enabled: yes
+
+#curl http://shipping-dev.siddharthais.online:8080/health
