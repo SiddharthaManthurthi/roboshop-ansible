@@ -70,4 +70,9 @@
       enabled: yes
 
       #curl http://cart-dev.siddharthais.online:8080/health
+      #telnet redis-dev.siddharthais.online 6379
+      #telnet mysql-dev.siddharthais.online 3306
+
       #telnet user-dev.siddharthais.online 8080
+
+      #to restart another server from here ssh ec2-user@cart-dev.siddharthais.online 'sudo systemctl restart cart'
