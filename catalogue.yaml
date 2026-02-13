@@ -46,11 +46,11 @@
      remote_src: yes
   
   - name: install dependencies
-    community.general.npm: ##ansible module for installing  the dependencies
+    community.general.npm: ##community module for installing  the dependencies
      path: /app
   
   - name: copy catalogue service
-    ansible.builtin.template: ##ansible module for copy #also we can use template if it is variable
+    ansible.builtin.template: ##ansible module for copy #also we can use template if it is variable/placeholders
      src: catalogue.service
      dest: /etc/systemd/system/catalogue.service
 
