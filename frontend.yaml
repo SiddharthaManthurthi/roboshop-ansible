@@ -39,7 +39,7 @@
   - name: copy the nginx.conf
     ansible.builtin.template:
       src: nginx.conf
-      path: /etc/nginx/nginx.conf
+      dest: /etc/nginx/nginx.conf
 
   - name: restart the nginx
     ansible.builitin.service:
