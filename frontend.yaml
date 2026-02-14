@@ -46,3 +46,5 @@
       name: nginx
       state: restarted
       enabled: yes
+
+      #login to the server and check if the url reflecting correct in the conf. example-> cat /etc/nginx.conf
